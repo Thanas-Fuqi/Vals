@@ -44,7 +44,8 @@ function spawnHeart() {
   heart.className = "heart";
   heart.innerHTML = "❤";
   heart.style.left = Math.random() * window.innerWidth + "px";
-  heart.style.fontSize = 12 + Math.random() * 16 + "px";
+  const sizeVW = 1.5 + Math.random() * 2.5;
+  heart.style.fontSize = `clamp(16px, ${sizeVW}vw, 40px)`;
   heartsContainer.appendChild(heart);
 
   setTimeout(() => heart.remove(), 3500);
