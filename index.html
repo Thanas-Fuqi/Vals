@@ -1,172 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Menu</title>
-
-<style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    font-family: "Arial", sans-serif;
-    background: #111;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  html {
-    font-size: 16px;
-  }
-
-  @media (max-width: 600px) {
-    html {
-      font-size: 20px;
-    }
-  }
-
-  .picker-container {
-    position: relative;
-    width: 40vh;
-    height: 80vh;
-    overflow: hidden;
-    border-radius: 16px;
-    background: #1a1a1a;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-  }
-
-  .picker {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.2s ease;
-    will-change: transform;
-  }
-
-  .picker-item {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    font-size: 1.2rem;
-    padding: 1rem 0;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-    color: #ccc;
-    user-select: none;
-  }
-
-  .picker-item.active {
-    font-size: 1.8rem;
-    color: #fff;
-  }
-
-  .picker-overlay {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 3rem;
-    margin-top: -1.5rem;
-    pointer-events: none;
-    border-top: 1px solid rgba(255,255,255,0.2);
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-  }
-
-  .picker-container::-webkit-scrollbar {
-    display: none;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-
-<div class="picker-container">
-  <div class="picker" id="picker">
-    <a href="Over_Loved/index.html" class="picker-item">Over Loved</a>
+  <div class="picker-container">
+    <div class="picker" id="picker">
+      <a href="Over_Loved/index.html" class="picker-item">Over Loved</a>
+    </div>
+    <div class="picker-overlay"></div>
   </div>
-  <div class="picker-overlay"></div>
-</div>
 
-<script>
-const picker = document.getElementById("picker");
-const items = Array.from(picker.children);
-
-const pickerContainer = document.querySelector(".picker-container");
-let selectedIndex = 0; let isThrottled = false;
-
-function updateActive() {
-  items.forEach((item, i) => item.classList.remove("active"));
-  const activeItem = items[selectedIndex];
-  activeItem.classList.add("active");
-
-  const containerHeight = pickerContainer.offsetHeight;
-  const activeRect = activeItem.getBoundingClientRect();
-
-  const offset = (containerHeight / 2) - (activeRect.height / 2) - (activeItem.offsetTop);
-  picker.style.transform = `translateY(${offset}px)`;
-}
-
-function changeIndex(delta) {
-  if (isThrottled) return;
-  
-  const newIndex = selectedIndex + delta;
-  if (newIndex >= 0 && newIndex < items.length) {
-    selectedIndex = newIndex; updateActive();
-    // Throttle: prevents one flick of the wrist from scrolling 20 items
-    isThrottled = true;
-    setTimeout(() => isThrottled = false, 150); 
-  }
-}
-
-// 1. Mouse Wheel & Trackpad
-let isScrolling = false;
-pickerContainer.addEventListener("wheel", (e) => { e.preventDefault();
-  // 1. Ignore tiny movements (noise)
-  if (Math.abs(e.deltaY) < 10) return;
-
-  // 2. Cooldown timer (prevents "hyper-scrolling")
-  if (!isScrolling) {
-    isScrolling = true;
-    
-    const delta = e.deltaY > 0 ? 1 : -1; changeIndex(delta);
-    setTimeout(() => isScrolling = false, 200); 
-  }
-}, { passive: false });
-
-// 2. Touch Support (Mobile)
-let touchStart = 0;
-pickerContainer.addEventListener("touchstart", (e) => {
-  touchStart = e.touches[0].clientY;
-});
-
-pickerContainer.addEventListener("touchmove", (e) => { e.preventDefault();
-  const touchEnd = e.touches[0].clientY;
-  const diff = touchStart - touchEnd;
-
-  if (Math.abs(diff) > 30) {
-    changeIndex(diff > 0 ? 1 : -1);
-    touchStart = touchEnd;
-  }
-}, { passive: false });
-
-// 3. Keyboard (Arrow Keys)
-document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowDown") changeIndex(1);
-  if (e.key === "ArrowUp") changeIndex(-1);
-});
-
-// 4. Clicks
-items.forEach((item, i) => {
-  item.addEventListener("click", () => {
-    selectedIndex = i; updateActive();
-  });
-});
-
-updateActive();
-</script>
-
+  <script src="script.js"></script>
 </body>
+
 </html>
