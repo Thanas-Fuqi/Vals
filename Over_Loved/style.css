@@ -61,15 +61,6 @@ body {
   background: #ff8fa3;
 }
 
-#crack {
-  position: absolute;
-  right: 6px;
-  top: -4px;
-  width: 2px;
-  height: 20px;
-  background: transparent;
-}
-
 .heart {
   position: absolute;
   top: -20px;

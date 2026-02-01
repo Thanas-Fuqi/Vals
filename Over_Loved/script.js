@@ -1,6 +1,5 @@
 const bar = document.getElementById("bar");
 const fill = document.getElementById("fill");
-const crack = document.getElementById("crack");
 const loader = document.getElementById("loader");
 const textInner = document.getElementById("textInner");
 const statusText = document.getElementById("statusText");
@@ -25,11 +24,10 @@ function startLoading() {
       statusText.textContent = "Almost there!";
     }
     
-    if (progress < 95) {
+    if (progress < 100) {
       progress++;
       bar.style.width = progress + "%";
     } else {
-      crack.style.background = "#e63946";
       clearInterval(loadInterval);
       statusText.textContent = "FINISHED!";
       startOverflow();
