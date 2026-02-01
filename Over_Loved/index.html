@@ -6,11 +6,16 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <audio id="heartbeatSound" src="heartbeat.mp3" preload="auto" loop></audio>
 
   <div id="container">
+
     <div id="loader">
-      <div id="bar"></div>
-      <div id="crack"></div>
+      <div id="statusText">Click!</div>
+      <div id="barWrapper">
+        <div id="bar"></div>
+        <div id="crack"></div>
+      </div>
     </div>
 
     <div id="hearts"></div>

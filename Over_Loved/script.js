@@ -1,23 +1,41 @@
 const bar = document.getElementById("bar");
-const crack = document.getElementById("crack");
 const fill = document.getElementById("fill");
-const text = document.getElementById("text");
+const crack = document.getElementById("crack");
+const loader = document.getElementById("loader");
+const textInner = document.getElementById("textInner");
+const statusText = document.getElementById("statusText");
+const heartsContainer = document.getElementById("hearts");
+const heartbeatSound = document.getElementById("heartbeatSound");
 
 let progress = 0;
-let broken = false;
 let fillLevel = 0;
+let started = false;
 
-const loadInterval = setInterval(() => {
-  if (progress < 95) {
-    progress += 1;
-    bar.style.width = progress + "%";
-  } else if (!broken) {
-    broken = true;
-    crack.style.background = "#e63946";
-    startOverflow();
-    clearInterval(loadInterval);
-  }
-}, 40);
+window.addEventListener("click", () => {
+  if (started) return; started = true;
+  statusText.textContent = "Loading!";
+  startLoading();
+}, { once: true });
+
+function startLoading() {
+  const loadInterval = setInterval(() => {
+    if (progress === 35) {
+      statusText.textContent = "Loading!...";
+    } else if (progress === 60) {
+      statusText.textContent = "Almost there!";
+    }
+    
+    if (progress < 95) {
+      progress++;
+      bar.style.width = progress + "%";
+    } else {
+      crack.style.background = "#e63946";
+      clearInterval(loadInterval);
+      statusText.textContent = "FINISHED!";
+      startOverflow();
+    }
+  }, 40);
+}
 
 function startOverflow() {
   const heartInterval = setInterval(() => {
@@ -27,26 +45,27 @@ function startOverflow() {
 
     if (fillLevel >= 100) {
       fill.style.height = "100%";
+      loader.style.display = "none";
+      heartsContainer.style.display = "none";
 
-      // lock final state
-      document.getElementById("loader").style.display = "none";
-      document.getElementById("hearts").style.display = "none";
-      document.getElementById("textInner").style.display = "inline-block";
+      textInner.style.display = "inline-block";
+      heartbeatSound.currentTime = 0;
+      heartbeatSound.play();
+
       clearInterval(heartInterval);
     }
   }, 120);
 }
 
-const heartsContainer = document.getElementById("hearts");
-
 function spawnHeart() {
   const heart = document.createElement("div");
   heart.className = "heart";
   heart.innerHTML = "❤";
-  heart.style.left = Math.random() * window.innerWidth + "px";
+
   const sizeVW = 1.5 + Math.random() * 2.5;
   heart.style.fontSize = `clamp(16px, ${sizeVW}vw, 40px)`;
-  heartsContainer.appendChild(heart);
+  heart.style.left = Math.random() * window.innerWidth + "px";
 
+  heartsContainer.appendChild(heart);
   setTimeout(() => heart.remove(), 3500);
 }
