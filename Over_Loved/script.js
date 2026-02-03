@@ -38,7 +38,7 @@ function startLoading() {
 function startOverflow() {
   const heartInterval = setInterval(() => {
     spawnHeart();
-    fillLevel += 2;
+    fillLevel += 4;
     fill.style.height = fillLevel + "%";
 
     if (fillLevel >= 100) {
