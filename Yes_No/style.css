@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+html, body {
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   height: 100vh;
@@ -10,7 +14,6 @@ body {
   align-items: center;
   background: radial-gradient(circle, #f64862, #ffffff);
   font-family: Arial, sans-serif;
-  overflow: hidden;
 }
 
 .container {
@@ -22,18 +25,19 @@ body {
 }
 
 img {
+  margin-bottom: 10px;
   width: 200px;
   height: 200px;
 }
 
-h1 {
-  margin-bottom: 24px;
+#text {
   color: #ff4d6d;
   font-size: 24px;
   white-space: nowrap;
 }
 
 .buttons {
+  margin-top: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,9 +76,9 @@ button {
 }
 
 @media (max-width: 480px) {
+  #text { font-size: 20px }
   #yesBtn { width: 90px }
   #noBtn { width: 90px }
   .buttons { gap: 16px }
-  h1 { font-size: 20px }
   body { height: 90vh }
 }
